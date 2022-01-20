@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wordsoup/widget/character_box.dart';
 import 'package:wordsoup/widget/keyboard_buffer_input.dart';
 
 class MainGamePage extends StatefulWidget {
@@ -16,14 +17,12 @@ class _MainGamePageState extends State<MainGamePage> {
   void initState() {
     super.initState();
     focusNode = FocusNode();
-    print("initState _MainGamePageState");
   }
 
   @override
   void dispose() {
     super.dispose();
     focusNode.dispose();
-    print("dispose _MainGamePageState");
   }
 
   @override
@@ -34,8 +33,9 @@ class _MainGamePageState extends State<MainGamePage> {
           return SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                  minWidth: constraints.maxWidth,
-                  minHeight: constraints.maxHeight),
+                minWidth: constraints.maxWidth,
+                minHeight: constraints.maxHeight,
+              ),
               child: IntrinsicHeight(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,9 +44,11 @@ class _MainGamePageState extends State<MainGamePage> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          setState(() {
-                            focusNode.requestFocus();
-                          });
+                          setState(
+                            () {
+                              focusNode.requestFocus();
+                            },
+                          );
                         },
                         child: Container(
                           color: Colors.indigoAccent,
@@ -55,32 +57,65 @@ class _MainGamePageState extends State<MainGamePage> {
                               Expanded(
                                 child: Row(
                                   crossAxisAlignment:
-                                  CrossAxisAlignment.stretch,
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     Expanded(
                                       flex: 1,
                                       child: Container(
-                                        margin: EdgeInsets.all(16),
+                                        margin: const EdgeInsets.all(16.0),
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                           children: [
                                             KeyboardBuffer(
                                               buffer: buffer,
                                               focusNode: focusNode,
                                               onChanged: (
-                                                  TextEditingValue oldValue,
-                                                  TextEditingValue newValue,) {
-                                                print(oldValue);
-                                                print(newValue);
-                                                buffer = newValue.text;
-                                                print(buffer);
+                                                TextEditingValue oldValue,
+                                                TextEditingValue newValue,
+                                              ) {
+                                                setState(() {
+                                                  buffer = newValue.text;
+                                                });
                                               },
                                             ),
                                             const Text(
                                               "WORD SOUP",
                                               style: TextStyle(fontSize: 32),
                                             ),
+                                            Row(
+                                              children: [
+                                                CharacterBoxWidget(
+                                                  char: buffer.isEmpty
+                                                      ? ""
+                                                      : buffer[0],
+                                                  status: BoxStatusEnum.SUCCESS,
+                                                ),
+                                                CharacterBoxWidget(
+                                                  char: buffer.length > 1
+                                                      ? buffer[1]
+                                                      : "",
+                                                  status: BoxStatusEnum.EMPTY,
+                                                ),
+                                                CharacterBoxWidget(
+                                                  char: buffer.length > 2
+                                                      ? buffer[2]
+                                                      : "",
+                                                  status: BoxStatusEnum.WARNING,
+                                                ),
+                                                CharacterBoxWidget(
+                                                  char: buffer.length > 3
+                                                      ? buffer[3]
+                                                      : "",
+                                                  status: BoxStatusEnum.ERROR,
+                                                ),
+                                                CharacterBoxWidget(
+                                                  char: buffer.length > 4
+                                                      ? buffer[4]
+                                                      : "",
+                                                ),
+                                              ],
+                                            )
                                           ],
                                         ),
                                       ),
