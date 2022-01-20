@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wordsoup/page/homepage.dart';
+import 'package:wordsoup/page/maingame.dart';
 
 class Application extends StatelessWidget {
   const Application({Key? key}) : super(key: key);
@@ -10,9 +10,10 @@ class Application extends StatelessWidget {
     return MaterialApp(
       title: 'Sopa de Letrinhas',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
-      home: const MyHomePage(title: 'Sopa de Letrinhas - Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: const MainGamePage(),
     );
   }
 }
