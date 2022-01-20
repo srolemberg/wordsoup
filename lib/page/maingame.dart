@@ -89,25 +89,25 @@ class _MainGamePageState extends State<MainGamePage> {
                                                   char: buffer.isEmpty
                                                       ? ""
                                                       : buffer[0],
-                                                  status: BoxStatusEnum.SUCCESS,
+                                                  status: BoxStatusEnum.success,
                                                 ),
                                                 CharacterBoxWidget(
                                                   char: buffer.length > 1
                                                       ? buffer[1]
                                                       : "",
-                                                  status: BoxStatusEnum.EMPTY,
+                                                  status: BoxStatusEnum.empty,
                                                 ),
                                                 CharacterBoxWidget(
                                                   char: buffer.length > 2
                                                       ? buffer[2]
                                                       : "",
-                                                  status: BoxStatusEnum.WARNING,
+                                                  status: BoxStatusEnum.warning,
                                                 ),
                                                 CharacterBoxWidget(
                                                   char: buffer.length > 3
                                                       ? buffer[3]
                                                       : "",
-                                                  status: BoxStatusEnum.ERROR,
+                                                  status: BoxStatusEnum.error,
                                                 ),
                                                 CharacterBoxWidget(
                                                   char: buffer.length > 4

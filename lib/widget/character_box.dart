@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum BoxStatusEnum { EMPTY, SUCCESS, WARNING, ERROR }
+enum BoxStatusEnum { empty, success, warning, error }
 
 class CharacterBoxWidget extends StatefulWidget {
   final String char;
@@ -10,7 +10,7 @@ class CharacterBoxWidget extends StatefulWidget {
   const CharacterBoxWidget({
     Key? key,
     required this.char,
-    this.status = BoxStatusEnum.EMPTY,
+    this.status = BoxStatusEnum.empty,
   }) : super(key: key);
 
   @override
@@ -34,23 +34,30 @@ class _CharacterBoxWidgetState extends State<CharacterBoxWidget>
   }
 
   Color getColorByStatus(BoxStatusEnum status) {
-    if (status == BoxStatusEnum.SUCCESS) return Colors.green;
-    if (status == BoxStatusEnum.ERROR) return Colors.red;
-    if (status == BoxStatusEnum.WARNING) return Colors.yellow;
+    if (status == BoxStatusEnum.success) return Colors.green;
+    if (status == BoxStatusEnum.error) return Colors.red;
+    if (status == BoxStatusEnum.warning) return Colors.yellow;
     return Colors.transparent;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: getColorByStatus(widget.status),
-      child: SizedBox(
-        width: 48.0,
-        child: Text(
-          widget.char,
-          style: const TextStyle(
-            fontSize: 48.0,
-            color: Colors.white,
+      decoration: BoxDecoration(
+          border: Border.all(
+        color: Colors.black,
+        width: 2.0,
+      )),
+      child: Container(
+        color: getColorByStatus(widget.status),
+        child: SizedBox(
+          width: 48.0,
+          child: Text(
+            widget.char.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 48.0,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
