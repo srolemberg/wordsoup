@@ -7,4 +7,3 @@ void main() {
   setPathUrlStrategy();
   runApp(const Application());
 }
-

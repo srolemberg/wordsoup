@@ -4,7 +4,6 @@ import 'package:wordsoup/page/maingame.dart';
 class Application extends StatelessWidget {
   const Application({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,7 +12,10 @@ class Application extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MainGamePage(),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const MainGamePage(),
+      },
     );
   }
 }
