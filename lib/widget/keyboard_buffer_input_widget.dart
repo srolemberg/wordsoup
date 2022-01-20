@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class KeyboardBuffer extends StatefulWidget {
+class KeyboardBufferInputWidget extends StatefulWidget {
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode;
 
@@ -15,9 +15,9 @@ class KeyboardBuffer extends StatefulWidget {
   final int maxCharacters;
 
   @override
-  _KeyboardBufferState createState() => _KeyboardBufferState();
+  _KeyboardBufferInputWidgetState createState() => _KeyboardBufferInputWidgetState();
 
-  KeyboardBuffer({
+  KeyboardBufferInputWidget({
     Key? key,
     required this.buffer,
     required this.onChanged,
@@ -43,7 +43,7 @@ class _CustomTextInputFormmater extends TextInputFormatter {
   }
 }
 
-class _KeyboardBufferState extends State<KeyboardBuffer> {
+class _KeyboardBufferInputWidgetState extends State<KeyboardBufferInputWidget> {
   @override
   void dispose() {
     super.dispose();

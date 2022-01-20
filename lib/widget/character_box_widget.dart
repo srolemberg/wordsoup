@@ -15,6 +15,34 @@ class CharacterBoxWidget extends StatefulWidget {
 
   @override
   _CharacterBoxWidgetState createState() => _CharacterBoxWidgetState();
+
+  static List<BoxStatusEnum> emptyBoxStatusList() {
+    return [
+      BoxStatusEnum.empty,
+      BoxStatusEnum.empty,
+      BoxStatusEnum.empty,
+      BoxStatusEnum.empty,
+      BoxStatusEnum.empty,
+      BoxStatusEnum.empty,
+      BoxStatusEnum.empty,
+      BoxStatusEnum.empty,
+      BoxStatusEnum.empty,
+    ];
+  }
+
+  static List<BoxStatusEnum> successBoxStatusList() {
+    return [
+      BoxStatusEnum.success,
+      BoxStatusEnum.success,
+      BoxStatusEnum.success,
+      BoxStatusEnum.success,
+      BoxStatusEnum.success,
+      BoxStatusEnum.success,
+      BoxStatusEnum.success,
+      BoxStatusEnum.success,
+      BoxStatusEnum.success,
+    ];
+  }
 }
 
 class _CharacterBoxWidgetState extends State<CharacterBoxWidget>
@@ -44,10 +72,11 @@ class _CharacterBoxWidgetState extends State<CharacterBoxWidget>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(
-        color: Colors.black,
-        width: 2.0,
-      )),
+        border: Border.all(
+          color: Colors.black,
+          width: 2.0,
+        ),
+      ),
       child: Container(
         color: getColorByStatus(widget.status),
         child: SizedBox(
