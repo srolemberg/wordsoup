@@ -1,24 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:url_strategy/url_strategy.dart';
 
-import 'page/homepage.dart';
+import 'application.dart';
 
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sopa de Letrinhas',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Sopa de Letrinhas - Demo Home Page'),
-    );
-  }
+  setPathUrlStrategy();
+  runApp(const Application());
 }
 
