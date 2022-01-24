@@ -260,8 +260,12 @@ class _MainGamePageState extends State<MainGamePage> {
                       child: Column(
                         children: [
                           Row(
-                            children: const [
-                              VirtualKeyboardWidget(),
+                            children: [
+                              VirtualKeyboardWidget(
+                                onTap: (VirtualKeyboardKeyEnum vk) {
+                                  print("porra: " + vk.name);
+                                },
+                              ),
                             ],
                           ),
                         ],
