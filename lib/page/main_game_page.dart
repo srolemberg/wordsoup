@@ -121,25 +121,7 @@ class _MainGamePageState extends State<MainGamePage> {
                                               ) {
                                                 setState(() {
                                                   buffer = newValue.text;
-                                                  if (!isRowOneComplete) {
-                                                    rowOne = buffer;
-                                                  } else if (!isRowTwoComplete) {
-                                                    rowTwo = buffer;
-                                                  } else if (!isRowThreeComplete) {
-                                                    rowThree = buffer;
-                                                  } else if (!isRowFourComplete) {
-                                                    rowFour = buffer;
-                                                  } else if (!isRowFiveComplete) {
-                                                    rowFive = buffer;
-                                                  } else if (!isRowSixComplete) {
-                                                    rowSix = buffer;
-                                                  } else if (!isRowSevenComplete) {
-                                                    rowSeven = buffer;
-                                                  } else if (!isRowEightComplete) {
-                                                    rowEight = buffer;
-                                                  } else if (!isRowNineComplete) {
-                                                    rowNine = buffer;
-                                                  }
+                                                  rowWritter();
                                                 });
                                               },
                                             ),
@@ -194,55 +176,6 @@ class _MainGamePageState extends State<MainGamePage> {
                                                 ),
                                               ],
                                             ),
-                                            Column(
-                                              children: [
-                                                MaterialButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      if (!isRowOneComplete) {
-                                                        if (rowOne.length ==
-                                                            5) {
-                                                          if (wordOfTheDay
-                                                                  .toUpperCase() ==
-                                                              rowOne
-                                                                  .toUpperCase()) {
-                                                            setState(() {
-                                                              listStatusRowOne =
-                                                                  CharacterBoxWidget
-                                                                      .successBoxStatusList();
-                                                              isRowOneComplete =
-                                                                  true;
-                                                              buffer = "";
-                                                              focusNode
-                                                                  .requestFocus();
-                                                            });
-                                                          }
-                                                        }
-                                                      } else if (!isRowTwoComplete) {
-                                                        rowTwo = buffer;
-                                                      } else if (!isRowThreeComplete) {
-                                                        rowThree = buffer;
-                                                      } else if (!isRowFourComplete) {
-                                                        rowFour = buffer;
-                                                      } else if (!isRowFiveComplete) {
-                                                        rowFive = buffer;
-                                                      } else if (!isRowSixComplete) {
-                                                        rowSix = buffer;
-                                                      } else if (!isRowSevenComplete) {
-                                                        rowSeven = buffer;
-                                                      } else if (!isRowEightComplete) {
-                                                        rowEight = buffer;
-                                                      } else if (!isRowNineComplete) {
-                                                        rowNine = buffer;
-                                                      }
-                                                    });
-                                                  },
-                                                  child: const Text(
-                                                    "CONFIRMA",
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
                                           ],
                                         ),
                                       ),
@@ -256,7 +189,7 @@ class _MainGamePageState extends State<MainGamePage> {
                       ),
                     ),
                     Container(
-                      color: Colors.red,
+                      color: Colors.deepPurple,
                       child: Column(
                         children: [
                           Row(
@@ -264,6 +197,66 @@ class _MainGamePageState extends State<MainGamePage> {
                               VirtualKeyboardWidget(
                                 onTap: (VirtualKeyboardKeyEnum vk) {
                                   print("porra: " + vk.name);
+                                  setState(
+                                    () {
+                                      if (vk != VirtualKeyboardKeyEnum.back &&
+                                          vk != VirtualKeyboardKeyEnum.enter &&
+                                          vk != VirtualKeyboardKeyEnum.cedil) {
+                                        buffer += vk.name;
+                                      } else {
+                                        if (vk ==
+                                            VirtualKeyboardKeyEnum.cedil) {
+                                          buffer += "ç";
+                                        } else {
+                                          if (vk ==
+                                              VirtualKeyboardKeyEnum.back) {
+                                            if (buffer.isNotEmpty) {
+                                              buffer = buffer.substring(
+                                                0,
+                                                buffer.length - 1,
+                                              );
+                                            }
+                                          } else {
+                                            print(vk.name);
+                                            if (!isRowOneComplete) {
+                                              if (rowOne.length == 5) {
+                                                if (wordOfTheDay
+                                                        .toUpperCase() ==
+                                                    rowOne.toUpperCase()) {
+                                                  setState(() {
+                                                    listStatusRowOne =
+                                                        CharacterBoxWidget
+                                                            .successBoxStatusList();
+                                                    isRowOneComplete = true;
+                                                    buffer = "";
+                                                    focusNode.requestFocus();
+                                                  });
+                                                }
+                                              }
+                                            } else if (!isRowTwoComplete) {
+                                              rowTwo = buffer;
+                                            } else if (!isRowThreeComplete) {
+                                              rowThree = buffer;
+                                            } else if (!isRowFourComplete) {
+                                              rowFour = buffer;
+                                            } else if (!isRowFiveComplete) {
+                                              rowFive = buffer;
+                                            } else if (!isRowSixComplete) {
+                                              rowSix = buffer;
+                                            } else if (!isRowSevenComplete) {
+                                              rowSeven = buffer;
+                                            } else if (!isRowEightComplete) {
+                                              rowEight = buffer;
+                                            } else if (!isRowNineComplete) {
+                                              rowNine = buffer;
+                                            }
+                                          }
+                                        }
+                                      }
+                                      rowWritter();
+                                      focusNode.requestFocus();
+                                    },
+                                  );
                                 },
                               ),
                             ],
@@ -279,5 +272,27 @@ class _MainGamePageState extends State<MainGamePage> {
         },
       ),
     );
+  }
+
+  void rowWritter() {
+    if (!isRowOneComplete) {
+      rowOne = buffer;
+    } else if (!isRowTwoComplete) {
+      rowTwo = buffer;
+    } else if (!isRowThreeComplete) {
+      rowThree = buffer;
+    } else if (!isRowFourComplete) {
+      rowFour = buffer;
+    } else if (!isRowFiveComplete) {
+      rowFive = buffer;
+    } else if (!isRowSixComplete) {
+      rowSix = buffer;
+    } else if (!isRowSevenComplete) {
+      rowSeven = buffer;
+    } else if (!isRowEightComplete) {
+      rowEight = buffer;
+    } else if (!isRowNineComplete) {
+      rowNine = buffer;
+    }
   }
 }
