@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wordsoup/widget/character_box_widget.dart';
+import 'package:wordsoup/widget/base/character_box_widget.dart';
 import 'package:wordsoup/widget/keyboard_buffer_input_widget.dart';
+import 'package:wordsoup/widget/virtual_keyboard_widget.dart';
 import 'package:wordsoup/widget/word_guesser_box_widget.dart';
 
 class MainGamePage extends StatefulWidget {
@@ -255,16 +256,12 @@ class _MainGamePageState extends State<MainGamePage> {
                       ),
                     ),
                     Container(
-                      height: 96,
                       color: Colors.red,
                       child: Column(
                         children: [
                           Row(
-                            children: [
-                              Text("Lol"),
-                              Text("Lol"),
-                              Text("Lol"),
-                              Text("Lol"),
+                            children: const [
+                              VirtualKeyboardWidget(),
                             ],
                           ),
                         ],

@@ -7,10 +7,15 @@ class CharacterBoxWidget extends StatefulWidget {
 
   final BoxStatusEnum status;
 
+  final double width;
+  final double height;
+
   const CharacterBoxWidget({
     Key? key,
     required this.char,
     this.status = BoxStatusEnum.empty,
+    this.width = 48,
+    this.height = 48,
   }) : super(key: key);
 
   @override
@@ -80,7 +85,7 @@ class _CharacterBoxWidgetState extends State<CharacterBoxWidget>
       child: Container(
         color: getColorByStatus(widget.status),
         child: SizedBox(
-          width: 48.0,
+          width: widget.width,
           child: Text(
             widget.char.toUpperCase(),
             style: const TextStyle(

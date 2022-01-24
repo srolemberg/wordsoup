@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'character_box_widget.dart';
+import 'base/character_box_widget.dart';
 
 enum WordRenderEnum { five, six, seven, eight, nine }
 
