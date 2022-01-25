@@ -1,13 +1,7 @@
 import 'package:wordsoup/page/model/word.dart';
 
 class MainGameData {
-  Word? wordOfTheDay;
-
-  String rawCinco;
-
-  String rawSeis;
-
-  String rawSete;
+  String wordOfTheDayClean;
 
   List<Word> fiveWords;
 
@@ -16,10 +10,7 @@ class MainGameData {
   List<Word> sevenWords;
 
   MainGameData({
-    this.wordOfTheDay,
-    this.rawCinco = "",
-    this.rawSeis = "",
-    this.rawSete = "",
+    this.wordOfTheDayClean = "",
     this.fiveWords = const <Word>[],
     this.sixWords = const <Word>[],
     this.sevenWords = const <Word>[],

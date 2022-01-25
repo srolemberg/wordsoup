@@ -26,6 +26,8 @@ class _MainGamePageState extends State<MainGamePage>
   late FocusNode focusNode;
   static const String wordOfTheDay = "SAMIR";
 
+  int MAX_CHAR = 5;
+
   String buffer = "";
 
   String rowOne = "";
@@ -102,7 +104,6 @@ class _MainGamePageState extends State<MainGamePage>
                           setState(
                             () {
                               focusNode.requestFocus();
-                              presenter?.sum("aaa", "bbb");
                             },
                           );
                         },
@@ -126,7 +127,7 @@ class _MainGamePageState extends State<MainGamePage>
                                             KeyboardBufferInputWidget(
                                               buffer: buffer,
                                               focusNode: focusNode,
-                                              maxCharacters: 9,
+                                              maxCharacters: MAX_CHAR,
                                               onChanged: (
                                                 TextEditingValue oldValue,
                                                 TextEditingValue newValue,
@@ -146,6 +147,7 @@ class _MainGamePageState extends State<MainGamePage>
                                                 WordGuesserBoxWidget(
                                                   word: rowOne,
                                                   statuses: listStatusRowOne,
+                                                  renderSize: MAX_CHAR,
                                                 ),
                                                 const SizedBox(
                                                   height: 16.0,
@@ -153,8 +155,7 @@ class _MainGamePageState extends State<MainGamePage>
                                                 WordGuesserBoxWidget(
                                                   word: rowTwo,
                                                   statuses: listStatusRowTwo,
-                                                  wordRender:
-                                                      WordRenderEnum.six,
+                                                  renderSize: MAX_CHAR,
                                                 ),
                                                 const SizedBox(
                                                   height: 16.0,
@@ -162,8 +163,7 @@ class _MainGamePageState extends State<MainGamePage>
                                                 WordGuesserBoxWidget(
                                                   word: rowThree,
                                                   statuses: listStatusRowThree,
-                                                  wordRender:
-                                                      WordRenderEnum.seven,
+                                                  renderSize: MAX_CHAR,
                                                 ),
                                                 const SizedBox(
                                                   height: 16.0,
@@ -171,8 +171,7 @@ class _MainGamePageState extends State<MainGamePage>
                                                 WordGuesserBoxWidget(
                                                   word: rowFour,
                                                   statuses: listStatusRowFour,
-                                                  wordRender:
-                                                      WordRenderEnum.eight,
+                                                  renderSize: MAX_CHAR,
                                                 ),
                                                 const SizedBox(
                                                   height: 16.0,
@@ -180,8 +179,15 @@ class _MainGamePageState extends State<MainGamePage>
                                                 WordGuesserBoxWidget(
                                                   word: rowFive,
                                                   statuses: listStatusRowFive,
-                                                  wordRender:
-                                                      WordRenderEnum.nine,
+                                                  renderSize: MAX_CHAR,
+                                                ),
+                                                const SizedBox(
+                                                  height: 16.0,
+                                                ),
+                                                WordGuesserBoxWidget(
+                                                  word: rowSix,
+                                                  statuses: listStatusRowSix,
+                                                  renderSize: MAX_CHAR,
                                                 ),
                                                 const SizedBox(
                                                   height: 16.0,
@@ -214,11 +220,15 @@ class _MainGamePageState extends State<MainGamePage>
                                       if (vk != VirtualKeyboardKeyEnum.back &&
                                           vk != VirtualKeyboardKeyEnum.enter &&
                                           vk != VirtualKeyboardKeyEnum.cedil) {
-                                        buffer += vk.name;
+                                        if (buffer.length < MAX_CHAR) {
+                                          buffer += vk.name;
+                                        }
                                       } else {
                                         if (vk ==
                                             VirtualKeyboardKeyEnum.cedil) {
-                                          buffer += "ç";
+                                          if (buffer.length < MAX_CHAR) {
+                                            buffer += "ç";
+                                          }
                                         } else {
                                           if (vk ==
                                               VirtualKeyboardKeyEnum.back) {
@@ -309,9 +319,9 @@ class _MainGamePageState extends State<MainGamePage>
   }
 
   @override
-  void result(String result) {
+  void initializedValues(int lengthOfWoD) {
     setState(() {
-      print(result);
+      MAX_CHAR = lengthOfWoD;
     });
   }
 }

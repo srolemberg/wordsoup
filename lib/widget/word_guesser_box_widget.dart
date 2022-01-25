@@ -2,19 +2,17 @@ import 'package:flutter/widgets.dart';
 
 import 'base/character_box_widget.dart';
 
-enum WordRenderEnum { five, six, seven, eight, nine }
-
 class WordGuesserBoxWidget extends StatefulWidget {
   final String word;
 
-  final WordRenderEnum wordRender;
+  final int renderSize;
 
   final List<BoxStatusEnum> statuses;
 
   const WordGuesserBoxWidget({
     Key? key,
     required this.word,
-    this.wordRender = WordRenderEnum.five,
+    this.renderSize = 5,
     this.statuses = const <BoxStatusEnum>[
       BoxStatusEnum.empty,
       BoxStatusEnum.empty,
@@ -304,13 +302,13 @@ class _WordGuesserBoxWidgetState extends State<WordGuesserBoxWidget>
   }
 
   List<Widget> _getRender() {
-    if (widget.wordRender == WordRenderEnum.six) {
+    if (widget.renderSize == 6) {
       return sixRender();
-    } else if (widget.wordRender == WordRenderEnum.seven) {
+    } else if (widget.renderSize == 7) {
       return sevenRender();
-    } else if (widget.wordRender == WordRenderEnum.eight) {
+    } else if (widget.renderSize == 8) {
       return eightRender();
-    } else if (widget.wordRender == WordRenderEnum.nine) {
+    } else if (widget.renderSize == 9) {
       return nineRender();
     } else {
       return fiveRender();

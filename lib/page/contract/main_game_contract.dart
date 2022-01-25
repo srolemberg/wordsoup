@@ -1,8 +1,7 @@
 abstract class MainGameContractView {
-  void result(String result);
+  void initializedValues(int lengthOfWoD);
 }
 
 abstract class MainGameContractPresenter {
-  void sum(String aaa, String bbb);
   void defineNewWordOfDay();
 }
