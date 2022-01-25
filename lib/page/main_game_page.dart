@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wordsoup/page/contract/main_game_contract.dart';
+import 'package:wordsoup/page/data/main_game_data.dart';
+import 'package:wordsoup/page/presenter/main_game_presenter.dart';
 import 'package:wordsoup/widget/base/character_box_widget.dart';
 import 'package:wordsoup/widget/keyboard_buffer_input_widget.dart';
 import 'package:wordsoup/widget/virtual_keyboard_widget.dart';
@@ -11,7 +14,15 @@ class MainGamePage extends StatefulWidget {
   _MainGamePageState createState() => _MainGamePageState();
 }
 
-class _MainGamePageState extends State<MainGamePage> {
+class _MainGamePageState extends State<MainGamePage>
+    implements MainGameContractView {
+  MainGamePresenter? presenter;
+
+  _MainGamePageState() {
+    presenter = MainGamePresenter(this, MainGameData());
+    presenter?.defineNewWordOfDay();
+  }
+
   late FocusNode focusNode;
   static const String wordOfTheDay = "SAMIR";
 
@@ -91,6 +102,7 @@ class _MainGamePageState extends State<MainGamePage> {
                           setState(
                             () {
                               focusNode.requestFocus();
+                              presenter?.sum("aaa", "bbb");
                             },
                           );
                         },
@@ -294,5 +306,12 @@ class _MainGamePageState extends State<MainGamePage> {
     } else if (!isRowNineComplete) {
       rowNine = buffer;
     }
+  }
+
+  @override
+  void result(String result) {
+    setState(() {
+      print(result);
+    });
   }
 }

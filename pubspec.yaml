@@ -14,6 +14,8 @@ dependencies:
 
   cupertino_icons: 1.0.4
   url_strategy: 0.2.0
+  json_serializable: 6.1.4
+  build_runner: 2.1.7
 
 dev_dependencies:
   flutter_test:
@@ -23,9 +25,9 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/json/cinco.json
-    - assets/json/seis.json
-    - assets/json/sete.json
+    - assets/cinco.json
+    - assets/seis.json
+    - assets/sete.json
 
   uses-material-design: true
 

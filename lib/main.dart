@@ -7,3 +7,5 @@ void main() {
   setPathUrlStrategy();
   runApp(const Application());
 }
+
+//flutter pub run build_runner build --delete-conflicting-outputs
