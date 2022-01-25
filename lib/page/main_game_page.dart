@@ -24,7 +24,6 @@ class _MainGamePageState extends State<MainGamePage>
   }
 
   late FocusNode focusNode;
-  static const String wordOfTheDay = "SAMIR";
 
   int MAX_CHAR = 5;
 
@@ -242,38 +241,6 @@ class _MainGamePageState extends State<MainGamePage>
                                               buffer.length - 1,
                                             );
                                           }
-                                        } else {
-                                          if (!isRowOneComplete) {
-                                            if (rowOne.length == 5) {
-                                              if (wordOfTheDay.toUpperCase() ==
-                                                  rowOne.toUpperCase()) {
-                                                setState(() {
-                                                  listStatusRowOne =
-                                                      CharacterBoxWidget
-                                                          .successBoxStatusList();
-                                                  isRowOneComplete = true;
-                                                  buffer = "";
-                                                  focusNode.requestFocus();
-                                                });
-                                              }
-                                            }
-                                          } else if (!isRowTwoComplete) {
-                                            rowTwo = buffer;
-                                          } else if (!isRowThreeComplete) {
-                                            rowThree = buffer;
-                                          } else if (!isRowFourComplete) {
-                                            rowFour = buffer;
-                                          } else if (!isRowFiveComplete) {
-                                            rowFive = buffer;
-                                          } else if (!isRowSixComplete) {
-                                            rowSix = buffer;
-                                          } else if (!isRowSevenComplete) {
-                                            rowSeven = buffer;
-                                          } else if (!isRowEightComplete) {
-                                            rowEight = buffer;
-                                          } else if (!isRowNineComplete) {
-                                            rowNine = buffer;
-                                          }
                                         }
                                       }
                                       rowWritter();
@@ -323,6 +290,58 @@ class _MainGamePageState extends State<MainGamePage>
   void initializedValues(int lengthOfWoD) {
     setState(() {
       MAX_CHAR = lengthOfWoD;
+    });
+  }
+
+  @override
+  void setBoxes(List<BoxStatusEnum> status) {
+    setState(() {
+      if (!isRowOneComplete) {
+        listStatusRowOne = status;
+        isRowOneComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      } else if (!isRowTwoComplete) {
+        listStatusRowTwo = status;
+        isRowTwoComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      } else if (!isRowThreeComplete) {
+        listStatusRowThree = status;
+        isRowThreeComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      } else if (!isRowFourComplete) {
+        listStatusRowFour = status;
+        isRowFourComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      } else if (!isRowFiveComplete) {
+        listStatusRowFive = status;
+        isRowFiveComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      } else if (!isRowSixComplete) {
+        listStatusRowSix = status;
+        isRowSixComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      } else if (!isRowSevenComplete) {
+        listStatusRowSeven = status;
+        isRowSevenComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      } else if (!isRowEightComplete) {
+        listStatusRowEight = status;
+        isRowEightComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      } else if (!isRowNineComplete) {
+        listStatusRowNine = status;
+        isRowNineComplete = true;
+        buffer = "";
+        focusNode.requestFocus();
+      }
     });
   }
 }

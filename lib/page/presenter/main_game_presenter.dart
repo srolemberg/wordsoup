@@ -7,6 +7,7 @@ import 'package:html_unescape/html_unescape.dart';
 import 'package:wordsoup/page/contract/main_game_contract.dart';
 import 'package:wordsoup/page/data/main_game_data.dart';
 import 'package:wordsoup/page/model/word.dart';
+import 'package:wordsoup/widget/base/character_box_widget.dart';
 
 class MainGamePresenter extends MainGameContractPresenter {
   final MainGameContractView _view;
@@ -50,14 +51,33 @@ class MainGamePresenter extends MainGameContractPresenter {
   void checkStringWithWoD(String value) {
     if (value.isNotEmpty &&
         value.length == _mainGameData.wordOfTheDayClean.length) {
-      final noDiatricValue = removeDiacritics(value);
-      final noDiatricResult = removeDiacritics(_mainGameData.wordOfTheDayClean);
-      if (noDiatricValue.toUpperCase() == noDiatricResult.toUpperCase()) {
+      final noDiatricValue = removeDiacritics(value).toUpperCase();
+      final noDiatricResult =
+          removeDiacritics(_mainGameData.wordOfTheDayClean).toUpperCase();
+      if (noDiatricValue == noDiatricResult) {
         print(
             "ESTA CARALHA É IGUAL e sem acento: $noDiatricValue e $noDiatricResult = ${_mainGameData.wordOfTheDayClean}");
+        _view.setBoxes(_mainGameData.success);
       } else {
         print(
             "ESTA CARALHA não é igual: $noDiatricValue e $noDiatricResult = ${_mainGameData.wordOfTheDayClean}");
+
+        var statusList = <BoxStatusEnum>[];
+
+        for (int i = 0; i < noDiatricValue.length; i++) {
+          if (noDiatricValue[i] == noDiatricResult[i]) {
+            statusList.add(BoxStatusEnum.success);
+            print("ssssss");
+          } else if (noDiatricResult.contains(noDiatricValue[i])) {
+            statusList.add(BoxStatusEnum.warning);
+            print("wwwwwwwwwww");
+          } else {
+            statusList.add(BoxStatusEnum.error);
+            print("eeeeeeeeeeeeeee");
+          }
+        }
+
+        _view.setBoxes(statusList);
       }
     }
   }
