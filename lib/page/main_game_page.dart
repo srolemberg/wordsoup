@@ -137,6 +137,12 @@ class _MainGamePageState extends State<MainGamePage>
                                                   rowWritter();
                                                 });
                                               },
+                                              onSubmitted: (String value) {
+                                                setState(() {
+                                                  presenter?.checkStringWithWoD(
+                                                      value);
+                                                });
+                                              },
                                             ),
                                             const Text(
                                               "WORD SOUP",
@@ -214,64 +220,59 @@ class _MainGamePageState extends State<MainGamePage>
                             children: [
                               VirtualKeyboardWidget(
                                 onTap: (VirtualKeyboardKeyEnum vk) {
-                                  print("porra: " + vk.name);
                                   setState(
                                     () {
                                       if (vk != VirtualKeyboardKeyEnum.back &&
-                                          vk != VirtualKeyboardKeyEnum.enter &&
-                                          vk != VirtualKeyboardKeyEnum.cedil) {
+                                          vk != VirtualKeyboardKeyEnum.enter) {
                                         if (buffer.length < MAX_CHAR) {
                                           buffer += vk.name;
                                         }
                                       } else {
                                         if (vk ==
-                                            VirtualKeyboardKeyEnum.cedil) {
-                                          if (buffer.length < MAX_CHAR) {
-                                            buffer += "ç";
+                                            VirtualKeyboardKeyEnum.enter) {
+                                          setState(() {
+                                            presenter
+                                                ?.checkStringWithWoD(buffer);
+                                          });
+                                        } else if (vk ==
+                                            VirtualKeyboardKeyEnum.back) {
+                                          if (buffer.isNotEmpty) {
+                                            buffer = buffer.substring(
+                                              0,
+                                              buffer.length - 1,
+                                            );
                                           }
                                         } else {
-                                          if (vk ==
-                                              VirtualKeyboardKeyEnum.back) {
-                                            if (buffer.isNotEmpty) {
-                                              buffer = buffer.substring(
-                                                0,
-                                                buffer.length - 1,
-                                              );
-                                            }
-                                          } else {
-                                            print(vk.name);
-                                            if (!isRowOneComplete) {
-                                              if (rowOne.length == 5) {
-                                                if (wordOfTheDay
-                                                        .toUpperCase() ==
-                                                    rowOne.toUpperCase()) {
-                                                  setState(() {
-                                                    listStatusRowOne =
-                                                        CharacterBoxWidget
-                                                            .successBoxStatusList();
-                                                    isRowOneComplete = true;
-                                                    buffer = "";
-                                                    focusNode.requestFocus();
-                                                  });
-                                                }
+                                          if (!isRowOneComplete) {
+                                            if (rowOne.length == 5) {
+                                              if (wordOfTheDay.toUpperCase() ==
+                                                  rowOne.toUpperCase()) {
+                                                setState(() {
+                                                  listStatusRowOne =
+                                                      CharacterBoxWidget
+                                                          .successBoxStatusList();
+                                                  isRowOneComplete = true;
+                                                  buffer = "";
+                                                  focusNode.requestFocus();
+                                                });
                                               }
-                                            } else if (!isRowTwoComplete) {
-                                              rowTwo = buffer;
-                                            } else if (!isRowThreeComplete) {
-                                              rowThree = buffer;
-                                            } else if (!isRowFourComplete) {
-                                              rowFour = buffer;
-                                            } else if (!isRowFiveComplete) {
-                                              rowFive = buffer;
-                                            } else if (!isRowSixComplete) {
-                                              rowSix = buffer;
-                                            } else if (!isRowSevenComplete) {
-                                              rowSeven = buffer;
-                                            } else if (!isRowEightComplete) {
-                                              rowEight = buffer;
-                                            } else if (!isRowNineComplete) {
-                                              rowNine = buffer;
                                             }
+                                          } else if (!isRowTwoComplete) {
+                                            rowTwo = buffer;
+                                          } else if (!isRowThreeComplete) {
+                                            rowThree = buffer;
+                                          } else if (!isRowFourComplete) {
+                                            rowFour = buffer;
+                                          } else if (!isRowFiveComplete) {
+                                            rowFive = buffer;
+                                          } else if (!isRowSixComplete) {
+                                            rowSix = buffer;
+                                          } else if (!isRowSevenComplete) {
+                                            rowSeven = buffer;
+                                          } else if (!isRowEightComplete) {
+                                            rowEight = buffer;
+                                          } else if (!isRowNineComplete) {
+                                            rowNine = buffer;
                                           }
                                         }
                                       }

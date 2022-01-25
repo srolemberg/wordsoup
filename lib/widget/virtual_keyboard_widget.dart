@@ -21,8 +21,7 @@ enum VirtualKeyboardKeyEnum {
   h,
   j,
   k,
-  l,
-  cedil, //emd
+  l, //emd
   z,
   x,
   c,
@@ -354,20 +353,6 @@ class _VirtualKeyboardWidgetState extends State<VirtualKeyboardWidget>
           cursor: SystemMouseCursors.click,
           child: CharacterBoxWidget(
             char: "L",
-            status: BoxStatusEnum.empty,
-          ),
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          widget.onTap(
-            VirtualKeyboardKeyEnum.cedil,
-          );
-        },
-        child: const MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: CharacterBoxWidget(
-            char: "Ç",
             status: BoxStatusEnum.empty,
           ),
         ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:diacritic/diacritic.dart';
 import 'package:flutter/services.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:wordsoup/page/contract/main_game_contract.dart';
@@ -45,4 +46,20 @@ class MainGamePresenter extends MainGameContractPresenter {
   Future<String> _loadAsset(String filename) async {
     return await rootBundle.loadString('assets/$filename.json');
   }
+
+  void checkStringWithWoD(String value) {
+    if (value.isNotEmpty &&
+        value.length == _mainGameData.wordOfTheDayClean.length) {
+      final noDiatricValue = removeDiacritics(value);
+      final noDiatricResult = removeDiacritics(_mainGameData.wordOfTheDayClean);
+      if (noDiatricValue.toUpperCase() == noDiatricResult.toUpperCase()) {
+        print(
+            "ESTA CARALHA É IGUAL e sem acento: $noDiatricValue e $noDiatricResult = ${_mainGameData.wordOfTheDayClean}");
+      } else {
+        print(
+            "ESTA CARALHA não é igual: $noDiatricValue e $noDiatricResult = ${_mainGameData.wordOfTheDayClean}");
+      }
+    }
+  }
 }
+//if palavra e variantes (?) está no dicionario, if contains i, if i == position, erro

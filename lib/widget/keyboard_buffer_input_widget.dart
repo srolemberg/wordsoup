@@ -6,21 +6,25 @@ class KeyboardBufferInputWidget extends StatefulWidget {
   final FocusNode focusNode;
 
   final Function(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) onChanged;
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) onChanged;
+
+  final ValueChanged<String>? onSubmitted;
 
   final String buffer;
 
   final int maxCharacters;
 
   @override
-  _KeyboardBufferInputWidgetState createState() => _KeyboardBufferInputWidgetState();
+  _KeyboardBufferInputWidgetState createState() =>
+      _KeyboardBufferInputWidgetState();
 
   KeyboardBufferInputWidget({
     Key? key,
     required this.buffer,
     required this.onChanged,
+    required this.onSubmitted,
     required this.focusNode,
     this.maxCharacters = 5,
   }) : super(key: key);
@@ -34,10 +38,8 @@ class _CustomTextInputFormmater extends TextInputFormatter {
   });
 
   @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue,) {
     onChanged(oldValue, newValue);
     return newValue;
   }
@@ -69,6 +71,7 @@ class _KeyboardBufferInputWidgetState extends State<KeyboardBufferInputWidget> {
           showCursor: false,
           maxLines: 1,
           minLines: 1,
+          onSubmitted: widget.onSubmitted,
           controller: widget.controller,
           backgroundCursorColor: Colors.transparent,
           focusNode: widget.focusNode,
@@ -78,6 +81,7 @@ class _KeyboardBufferInputWidgetState extends State<KeyboardBufferInputWidget> {
           keyboardType: TextInputType.streetAddress,
           inputFormatters: [
             LengthLimitingTextInputFormatter(widget.maxCharacters),
+            FilteringTextInputFormatter(RegExp(r"\s\b|\b\s"), allow: false),
             _CustomTextInputFormmater(onChanged: widget.onChanged),
           ],
         ),
