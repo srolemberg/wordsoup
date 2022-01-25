@@ -18,6 +18,21 @@ class MainGamePresenter extends MainGameContractPresenter {
 
   @override
   Future<void> defineNewWordOfDay() async {
+    await _initializeListsFromAssets();
+
+    final all = _mainGameData.getAll();
+
+    _generateNewWord(all);
+
+    _mainGameData.wordOfTheDayNoAccentDiatricUpperCase =
+        removeDiacritics(_mainGameData.wordOfTheDayUnescaped).toUpperCase();
+
+    print("WORD OF THE DAY: " +
+        _mainGameData.wordOfTheDayNoAccentDiatricUpperCase);
+    _view.initializedValues(_mainGameData.wordOfTheDayUnescaped.length);
+  }
+
+  Future<void> _initializeListsFromAssets() async {
     await _loadAsset("cinco").then((value) => {
           _mainGameData.fiveWords = _setLists(value),
         });
@@ -27,16 +42,12 @@ class MainGamePresenter extends MainGameContractPresenter {
     await _loadAsset("sete").then((value) => {
           _mainGameData.sevenWords = _setLists(value),
         });
+  }
 
-    final all = _mainGameData.fiveWords +
-        _mainGameData.sixWords +
-        _mainGameData.sevenWords;
+  void _generateNewWord(List<Word> all) {
     final randomNum = Random.secure().nextInt(all.length);
-    _mainGameData.wordOfTheDayClean =
+    _mainGameData.wordOfTheDayUnescaped =
         HtmlUnescape().convert(all[randomNum].value);
-    print("W+++O+++D: ${_mainGameData.wordOfTheDayClean}");
-
-    _view.initializedValues(_mainGameData.wordOfTheDayClean.length);
   }
 
   List<Word> _setLists(String raw) {
@@ -48,38 +59,55 @@ class MainGamePresenter extends MainGameContractPresenter {
     return await rootBundle.loadString('assets/$filename.json');
   }
 
+  @override
   void checkStringWithWoD(String value) {
     if (value.isNotEmpty &&
-        value.length == _mainGameData.wordOfTheDayClean.length) {
-      final noDiatricValue = removeDiacritics(value).toUpperCase();
-      final noDiatricResult =
-          removeDiacritics(_mainGameData.wordOfTheDayClean).toUpperCase();
-      if (noDiatricValue == noDiatricResult) {
-        print(
-            "ESTA CARALHA É IGUAL e sem acento: $noDiatricValue e $noDiatricResult = ${_mainGameData.wordOfTheDayClean}");
-        _view.setBoxes(_mainGameData.success);
-      } else {
-        print(
-            "ESTA CARALHA não é igual: $noDiatricValue e $noDiatricResult = ${_mainGameData.wordOfTheDayClean}");
+        value.length == _mainGameData.wordOfTheDayUnescaped.length) {
+      var splitOfUserWord = removeDiacritics(value).toUpperCase().split("");
+      var splitOfStoredWord =
+          _mainGameData.wordOfTheDayNoAccentDiatricUpperCase.split("");
 
-        var statusList = <BoxStatusEnum>[];
+      Map<String, int> ocurrences =
+          _listOfCharsWithOcurrences(splitOfStoredWord);
 
-        for (int i = 0; i < noDiatricValue.length; i++) {
-          if (noDiatricValue[i] == noDiatricResult[i]) {
-            statusList.add(BoxStatusEnum.success);
-            print("ssssss");
-          } else if (noDiatricResult.contains(noDiatricValue[i])) {
-            statusList.add(BoxStatusEnum.warning);
-            print("wwwwwwwwwww");
+      List<BoxStatusEnum> statusList = [];
+
+      for (int i = 0; i < splitOfUserWord.length; i++) {
+        if (splitOfStoredWord.contains(splitOfUserWord[i])) {
+          if (ocurrences[splitOfUserWord[i]]! > 0) {
+            if (splitOfStoredWord[i] == splitOfUserWord[i]) {
+              statusList.add(BoxStatusEnum.success);
+            } else {
+              statusList.add(BoxStatusEnum.warning);
+            }
+
+            ocurrences.update(splitOfUserWord[i], (value) => value - 1);
           } else {
-            statusList.add(BoxStatusEnum.error);
-            print("eeeeeeeeeeeeeee");
+            statusList.add(BoxStatusEnum.empty);
           }
+        } else {
+          statusList.add(BoxStatusEnum.empty);
         }
+      }
 
-        _view.setBoxes(statusList);
+      if (_mainGameData.isFinish(statusList)) {
+        _view.setBoxesAndFinish(statusList);
+      } else {
+        _view.setBoxesAndContinue(statusList);
       }
     }
   }
+
+  Map<String, int> _listOfCharsWithOcurrences(
+      List<String> listOfStoredDiacrit) {
+    Map<String, int> ocurrences = {};
+    for (var element in listOfStoredDiacrit) {
+      if (ocurrences.containsKey(element)) {
+        ocurrences.update(element, (value) => value + 1);
+      } else {
+        ocurrences[element] = 1;
+      }
+    }
+    return ocurrences;
+  }
 }
-//if palavra e variantes (?) está no dicionario, if contains i, if i == position, erro

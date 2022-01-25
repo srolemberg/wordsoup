@@ -294,7 +294,7 @@ class _MainGamePageState extends State<MainGamePage>
   }
 
   @override
-  void setBoxes(List<BoxStatusEnum> status) {
+  void setBoxesAndContinue(List<BoxStatusEnum> status) {
     setState(() {
       if (!isRowOneComplete) {
         listStatusRowOne = status;
@@ -343,5 +343,10 @@ class _MainGamePageState extends State<MainGamePage>
         focusNode.requestFocus();
       }
     });
+  }
+
+  @override
+  void setBoxesAndFinish(List<BoxStatusEnum> status) {
+    setBoxesAndContinue(status);
   }
 }
