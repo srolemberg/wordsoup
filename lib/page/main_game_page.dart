@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordsoup/page/contract/main_game_contract.dart';
 import 'package:wordsoup/page/data/main_game_data.dart';
 import 'package:wordsoup/page/presenter/main_game_presenter.dart';
@@ -17,10 +18,18 @@ class MainGamePage extends StatefulWidget {
 class _MainGamePageState extends State<MainGamePage>
     implements MainGameContractView {
   MainGamePresenter? presenter;
+  Future<SharedPreferences>? prefs;
 
   _MainGamePageState() {
     presenter = MainGamePresenter(this, MainGameData());
     presenter?.defineNewWordOfDay();
+    prefs = SharedPreferences.getInstance();
+
+    prefs?.then(
+      (SharedPreferences preferences) => print(
+        "lengthOfWoD ${preferences.getInt("lengthOfWoD")}",
+      ),
+    );
   }
 
   late FocusNode focusNode;
@@ -290,6 +299,8 @@ class _MainGamePageState extends State<MainGamePage>
   void initializedValues(int lengthOfWoD) {
     setState(() {
       MAX_CHAR = lengthOfWoD;
+      prefs?.then((SharedPreferences preferences) =>
+          preferences.setInt("lengthOfWoD", lengthOfWoD));
     });
   }
 
