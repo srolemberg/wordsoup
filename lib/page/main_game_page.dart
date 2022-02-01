@@ -1,8 +1,12 @@
+import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordsoup/page/contract/main_game_contract.dart';
 import 'package:wordsoup/page/data/main_game_data.dart';
 import 'package:wordsoup/page/presenter/main_game_presenter.dart';
+import 'package:wordsoup/page/repository.dart';
 import 'package:wordsoup/widget/base/character_box_widget.dart';
 import 'package:wordsoup/widget/keyboard_buffer_input_widget.dart';
 import 'package:wordsoup/widget/virtual_keyboard_widget.dart';
@@ -18,18 +22,17 @@ class MainGamePage extends StatefulWidget {
 class _MainGamePageState extends State<MainGamePage>
     implements MainGameContractView {
   MainGamePresenter? presenter;
-  Future<SharedPreferences>? prefs;
 
   _MainGamePageState() {
-    presenter = MainGamePresenter(this, MainGameData());
-    presenter?.defineNewWordOfDay();
-    prefs = SharedPreferences.getInstance();
-
-    prefs?.then(
-      (SharedPreferences preferences) => print(
-        "lengthOfWoD ${preferences.getInt("lengthOfWoD")}",
-      ),
+    presenter = MainGamePresenter(
+      this,
+      MainGameData(),
+      SharedPreferences.getInstance(),
+      HtmlUnescape(),
+      ZipDecoder(),
+      Repository(Client()),
     );
+    presenter?.initialize();
   }
 
   late FocusNode focusNode;
@@ -299,8 +302,8 @@ class _MainGamePageState extends State<MainGamePage>
   void initializedValues(int lengthOfWoD) {
     setState(() {
       MAX_CHAR = lengthOfWoD;
-      prefs?.then((SharedPreferences preferences) =>
-          preferences.setInt("lengthOfWoD", lengthOfWoD));
+      // prefs?.then((SharedPreferences preferences) =>
+      //     preferences.setInt("lengthOfWoD", lengthOfWoD));
     });
   }
 

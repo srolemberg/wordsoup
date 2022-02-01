@@ -1,38 +1,81 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:archive/archive_io.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/services.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordsoup/page/contract/main_game_contract.dart';
 import 'package:wordsoup/page/data/main_game_data.dart';
 import 'package:wordsoup/page/model/word.dart';
 import 'package:wordsoup/page/model/word_of_day.dart';
+import 'package:wordsoup/page/model/world_time_api.dart';
 import 'package:wordsoup/widget/base/character_box_widget.dart';
+
+import '../repository.dart';
 
 class MainGamePresenter extends MainGameContractPresenter {
   final MainGameContractView _view;
 
   final MainGameData _mainGameData;
 
-  MainGamePresenter(this._view, this._mainGameData);
+  Future<SharedPreferences>? sharedPreferences;
+
+  HtmlUnescape htmlUnescape;
+
+  ZipDecoder zipDecoder;
+
+  RepositoryContract repository;
+
+  MainGamePresenter(
+    this._view,
+    this._mainGameData,
+    this.sharedPreferences,
+    this.htmlUnescape,
+    this.zipDecoder,
+    this.repository,
+  );
 
   @override
-  Future<void> defineNewWordOfDay() async {
-    await _initializeListsFromAssets();
+  Future<void> initialize() async {
+    getTimeFromApi();
+  }
 
-    final all = _mainGameData.getAll();
-
-    _generateNewWord(all);
-
-    _mainGameData.wordOfTheDayNoAccentDiacriticUpperCase =
-        removeDiacritics(_mainGameData.wordOfTheDayUnescaped).toUpperCase();
-
-    print("WORD OF THE DAY: " +
-        _mainGameData.wordOfTheDayUnescaped);
-    print("WORD OF THE DAY size list: ${_mainGameData.wordsOfDays.length}");
-    _view.initializedValues(_mainGameData.wordOfTheDayUnescaped.length);
+  @override
+  void getTimeFromApi() {
+    repository.fetchTime().then(
+          (response) async => {
+            if (response.statusCode == HttpStatus.ok)
+              {
+                _mainGameData.now = WorldTimeApi.fromJson(
+                  jsonDecode(
+                    response.body,
+                  ),
+                ),
+                await _initializeListsFromAssets(),
+                _generateNewWord(_mainGameData.getAll()),
+                _mainGameData.wordOfTheDayNoAccentDiacriticUpperCase =
+                    removeDiacritics(_mainGameData.wordOfTheDayUnescaped)
+                        .toUpperCase(),
+                print("NOW: ${_mainGameData.now?.datetime}"),
+                print(
+                    "WORD OF THE DAY: " + _mainGameData.wordOfTheDayUnescaped),
+                print(
+                    "WORD OF THE DAY size list: ${_mainGameData.wordsOfDays.length}"),
+                _view.initializedValues(
+                  _mainGameData.wordOfTheDayUnescaped.length,
+                ),
+              }
+            else
+              {
+                throw Exception(
+                  'Failed to load WorldTimeApi',
+                )
+              }
+          },
+        );
   }
 
   Future<void> _initializeListsFromAssets() async {
@@ -42,7 +85,7 @@ class MainGamePresenter extends MainGameContractPresenter {
   void _generateNewWord(List<Word> all) {
     final randomNum = Random.secure().nextInt(all.length);
     _mainGameData.wordOfTheDayUnescaped =
-        HtmlUnescape().convert(all[randomNum].value);
+        htmlUnescape.convert(all[randomNum].value);
   }
 
   List<Word> _setListWords(String raw) {
@@ -52,14 +95,15 @@ class MainGamePresenter extends MainGameContractPresenter {
 
   List<WordOfDay> _setListWordOfDays(String raw) {
     Iterable iterable = json.decode(raw);
-    return List<WordOfDay>.from(iterable.map((model) => WordOfDay.fromJson(model)));
+    return List<WordOfDay>.from(
+        iterable.map((model) => WordOfDay.fromJson(model)));
   }
 
   Future _loadByteDataZip(String filename) async {
     var bytedata = await rootBundle.load('$filename.zip');
     final buffer = bytedata.buffer;
 
-    var decoded = ZipDecoder().decodeBytes(buffer.asInt8List());
+    var decoded = zipDecoder.decodeBytes(buffer.asInt8List());
 
     for (final file in decoded) {
       if (file.isFile) {

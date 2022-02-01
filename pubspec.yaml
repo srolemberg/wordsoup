@@ -20,6 +20,8 @@ dependencies:
   diacritic: 0.1.3
   shared_preferences: 2.0.12
   archive: 3.1.11
+  http: 0.13.4
+  json_annotation: 4.4.0
 
 dev_dependencies:
   flutter_test:
@@ -29,9 +31,7 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/cinco.json
-    - assets/seis.json
-    - assets/sete.json
+    - assets/assets.zip
 
   uses-material-design: true
 

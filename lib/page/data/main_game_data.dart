@@ -1,5 +1,6 @@
 import 'package:wordsoup/page/model/word.dart';
 import 'package:wordsoup/page/model/word_of_day.dart';
+import 'package:wordsoup/page/model/world_time_api.dart';
 import 'package:wordsoup/widget/base/character_box_widget.dart';
 
 class MainGameData {
@@ -15,6 +16,8 @@ class MainGameData {
 
   List<WordOfDay> wordsOfDays;
 
+  WorldTimeApi? now;
+
   MainGameData({
     this.wordOfTheDayUnescaped = "",
     this.wordOfTheDayNoAccentDiacriticUpperCase = "",
@@ -22,6 +25,7 @@ class MainGameData {
     this.sixWords = const <Word>[],
     this.sevenWords = const <Word>[],
     this.wordsOfDays = const <WordOfDay>[],
+    this.now,
   });
 
   List<BoxStatusEnum> empty = const <BoxStatusEnum>[

@@ -9,7 +9,9 @@ abstract class MainGameContractView {
 }
 
 abstract class MainGameContractPresenter {
-  void defineNewWordOfDay();
+  void initialize();
 
   void checkStringWithWoD(String value);
+
+  void getTimeFromApi();
 }
