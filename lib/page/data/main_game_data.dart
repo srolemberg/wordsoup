@@ -4,7 +4,7 @@ import 'package:wordsoup/widget/base/character_box_widget.dart';
 class MainGameData {
   String wordOfTheDayUnescaped;
 
-  String wordOfTheDayNoAccentDiatricUpperCase;
+  String wordOfTheDayNoAccentDiacriticUpperCase;
 
   List<Word> fiveWords;
 
@@ -14,7 +14,7 @@ class MainGameData {
 
   MainGameData({
     this.wordOfTheDayUnescaped = "",
-    this.wordOfTheDayNoAccentDiatricUpperCase = "",
+    this.wordOfTheDayNoAccentDiacriticUpperCase = "",
     this.fiveWords = const <Word>[],
     this.sixWords = const <Word>[],
     this.sevenWords = const <Word>[],

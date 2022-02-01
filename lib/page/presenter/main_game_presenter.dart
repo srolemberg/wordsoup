@@ -24,11 +24,11 @@ class MainGamePresenter extends MainGameContractPresenter {
 
     _generateNewWord(all);
 
-    _mainGameData.wordOfTheDayNoAccentDiatricUpperCase =
+    _mainGameData.wordOfTheDayNoAccentDiacriticUpperCase =
         removeDiacritics(_mainGameData.wordOfTheDayUnescaped).toUpperCase();
 
     print("WORD OF THE DAY: " +
-        _mainGameData.wordOfTheDayNoAccentDiatricUpperCase);
+        _mainGameData.wordOfTheDayNoAccentDiacriticUpperCase);
     _view.initializedValues(_mainGameData.wordOfTheDayUnescaped.length);
   }
 
@@ -65,23 +65,23 @@ class MainGamePresenter extends MainGameContractPresenter {
         value.length == _mainGameData.wordOfTheDayUnescaped.length) {
       var splitOfUserWord = removeDiacritics(value).toUpperCase().split("");
       var splitOfStoredWord =
-          _mainGameData.wordOfTheDayNoAccentDiatricUpperCase.split("");
+          _mainGameData.wordOfTheDayNoAccentDiacriticUpperCase.split("");
 
-      Map<String, int> ocurrences =
+      Map<String, int> ocurrencesOfStoredWord =
           _listOfCharsWithOcurrences(splitOfStoredWord);
 
       List<BoxStatusEnum> statusList = [];
 
       for (int i = 0; i < splitOfUserWord.length; i++) {
         if (splitOfStoredWord.contains(splitOfUserWord[i])) {
-          if (ocurrences[splitOfUserWord[i]]! > 0) {
+          if (ocurrencesOfStoredWord[splitOfUserWord[i]]! > 0) {
             if (splitOfStoredWord[i] == splitOfUserWord[i]) {
               statusList.add(BoxStatusEnum.success);
             } else {
               statusList.add(BoxStatusEnum.warning);
             }
 
-            ocurrences.update(splitOfUserWord[i], (value) => value - 1);
+            ocurrencesOfStoredWord.update(splitOfUserWord[i], (value) => value - 1);
           } else {
             statusList.add(BoxStatusEnum.empty);
           }
