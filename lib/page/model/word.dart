@@ -4,6 +4,7 @@ part 'word.g.dart';
 
 @JsonSerializable()
 class Word {
+  @JsonKey(name: 'v')
   String value;
 
   Word({

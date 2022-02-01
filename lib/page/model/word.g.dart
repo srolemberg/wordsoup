@@ -7,9 +7,9 @@ part of 'word.dart';
 // **************************************************************************
 
 Word _$WordFromJson(Map<String, dynamic> json) => Word(
-      value: json['value'] as String,
+      value: json['v'] as String,
     );
 
 Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
-      'value': instance.value,
+      'v': instance.value,
     };
