@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:archive/archive_io.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/services.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:wordsoup/page/contract/main_game_contract.dart';
 import 'package:wordsoup/page/data/main_game_data.dart';
 import 'package:wordsoup/page/model/word.dart';
+import 'package:wordsoup/page/model/word_of_day.dart';
 import 'package:wordsoup/widget/base/character_box_widget.dart';
 
 class MainGamePresenter extends MainGameContractPresenter {
@@ -28,20 +30,13 @@ class MainGamePresenter extends MainGameContractPresenter {
         removeDiacritics(_mainGameData.wordOfTheDayUnescaped).toUpperCase();
 
     print("WORD OF THE DAY: " +
-        _mainGameData.wordOfTheDayNoAccentDiacriticUpperCase);
+        _mainGameData.wordOfTheDayUnescaped);
+    print("WORD OF THE DAY size list: ${_mainGameData.wordsOfDays.length}");
     _view.initializedValues(_mainGameData.wordOfTheDayUnescaped.length);
   }
 
   Future<void> _initializeListsFromAssets() async {
-    await _loadAsset("cinco").then((value) => {
-          _mainGameData.fiveWords = _setLists(value),
-        });
-    await _loadAsset("seis").then((value) => {
-          _mainGameData.sixWords = _setLists(value),
-        });
-    await _loadAsset("sete").then((value) => {
-          _mainGameData.sevenWords = _setLists(value),
-        });
+    await _loadByteDataZip("assets").then((_) => {});
   }
 
   void _generateNewWord(List<Word> all) {
@@ -50,13 +45,38 @@ class MainGamePresenter extends MainGameContractPresenter {
         HtmlUnescape().convert(all[randomNum].value);
   }
 
-  List<Word> _setLists(String raw) {
+  List<Word> _setListWords(String raw) {
     Iterable iterable = json.decode(raw);
     return List<Word>.from(iterable.map((model) => Word.fromJson(model)));
   }
 
-  Future<String> _loadAsset(String filename) async {
-    return await rootBundle.loadString('assets/$filename.json');
+  List<WordOfDay> _setListWordOfDays(String raw) {
+    Iterable iterable = json.decode(raw);
+    return List<WordOfDay>.from(iterable.map((model) => WordOfDay.fromJson(model)));
+  }
+
+  Future _loadByteDataZip(String filename) async {
+    var bytedata = await rootBundle.load('$filename.zip');
+    final buffer = bytedata.buffer;
+
+    var decoded = ZipDecoder().decodeBytes(buffer.asInt8List());
+
+    for (final file in decoded) {
+      if (file.isFile) {
+        final data = file.content as List<int>;
+        final String json = utf8.decode(data);
+
+        if (file.name == "cinco.json") {
+          _mainGameData.fiveWords = _setListWords(json);
+        } else if (file.name == "seis.json") {
+          _mainGameData.fiveWords = _setListWords(json);
+        } else if (file.name == "sete.json") {
+          _mainGameData.fiveWords = _setListWords(json);
+        } else if (file.name == "wods.json") {
+          _mainGameData.wordsOfDays = _setListWordOfDays(json);
+        }
+      }
+    }
   }
 
   @override
@@ -81,7 +101,8 @@ class MainGamePresenter extends MainGameContractPresenter {
               statusList.add(BoxStatusEnum.warning);
             }
 
-            ocurrencesOfStoredWord.update(splitOfUserWord[i], (value) => value - 1);
+            ocurrencesOfStoredWord.update(
+                splitOfUserWord[i], (value) => value - 1);
           } else {
             statusList.add(BoxStatusEnum.empty);
           }
