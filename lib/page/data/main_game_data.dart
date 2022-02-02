@@ -4,9 +4,9 @@ import 'package:wordsoup/page/model/world_time_api.dart';
 import 'package:wordsoup/widget/base/character_box_widget.dart';
 
 class MainGameData {
-  String wordOfTheDayUnescaped;
+  String wordUnescaped;
 
-  String wordOfTheDayNoAccentDiacriticUpperCase;
+  String wordClean;
 
   List<Word> fiveWords;
 
@@ -18,14 +18,17 @@ class MainGameData {
 
   WorldTimeApi? now;
 
+  WordOfDay? wod;
+
   MainGameData({
-    this.wordOfTheDayUnescaped = "",
-    this.wordOfTheDayNoAccentDiacriticUpperCase = "",
+    this.wordUnescaped = "",
+    this.wordClean = "",
     this.fiveWords = const <Word>[],
     this.sixWords = const <Word>[],
     this.sevenWords = const <Word>[],
     this.wordsOfDays = const <WordOfDay>[],
     this.now,
+    this.wod,
   });
 
   List<BoxStatusEnum> empty = const <BoxStatusEnum>[

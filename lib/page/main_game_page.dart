@@ -363,4 +363,14 @@ class _MainGamePageState extends State<MainGamePage>
   void setBoxesAndFinish(List<BoxStatusEnum> status) {
     setBoxesAndContinue(status);
   }
+
+  @override
+  void onGetTimeSuccess() {
+    presenter?.checkTimeGameState();
+  }
+
+  @override
+  void onTimeGameStateChecked() {
+    presenter?.checkStringGameState();
+  }
 }

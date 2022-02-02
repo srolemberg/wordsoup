@@ -6,6 +6,10 @@ abstract class MainGameContractView {
   void setBoxesAndContinue(List<BoxStatusEnum> status);
 
   void setBoxesAndFinish(List<BoxStatusEnum> status);
+
+  void onGetTimeSuccess();
+
+  void onTimeGameStateChecked();
 }
 
 abstract class MainGameContractPresenter {
@@ -14,4 +18,8 @@ abstract class MainGameContractPresenter {
   void checkStringWithWoD(String value);
 
   void getTimeFromApi();
+
+  void checkTimeGameState();
+
+  void checkStringGameState();
 }
