@@ -373,4 +373,10 @@ class _MainGamePageState extends State<MainGamePage>
   void onTimeGameStateChecked() {
     presenter?.checkStringGameState();
   }
+
+  @override
+  void startFirstGameEver() {}
+
+  @override
+  void startNewGameOfDay() {}
 }

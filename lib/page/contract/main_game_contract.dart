@@ -10,6 +10,10 @@ abstract class MainGameContractView {
   void onGetTimeSuccess();
 
   void onTimeGameStateChecked();
+
+  void startFirstGameEver();
+
+  void startNewGameOfDay();
 }
 
 abstract class MainGameContractPresenter {
