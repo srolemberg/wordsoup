@@ -4,6 +4,7 @@
 /windows
 /linux
 /macos
+/lib/generated
 
 # Miscellaneous
 *.class
